@@ -1,0 +1,9 @@
+#ifndef version_h
+#define version_h
+
+// Make sure this matches NAM version in ../CMakeLists.txt!
+#define NEURAL_AMP_MODELER_DSP_VERSION_MAJOR @NAM_VERSION_MAJOR@
+#define NEURAL_AMP_MODELER_DSP_VERSION_MINOR @NAM_VERSION_MINOR@
+#define NEURAL_AMP_MODELER_DSP_VERSION_PATCH @NAM_VERSION_PATCH@
+
+#endif
