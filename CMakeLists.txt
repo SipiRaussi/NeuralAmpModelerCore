@@ -30,7 +30,7 @@ install(FILES "${PROJECT_BINARY_DIR}/include/version.h" DESTINATION include)
 
 file(GLOB HEADER_FILES "include/*.h")
 
-install(FILES "${HEADER_FILES}" DESTINATION include)
+install(FILES ${HEADER_FILES} DESTINATION include)
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
