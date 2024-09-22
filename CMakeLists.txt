@@ -1,7 +1,9 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.30)
 
 # Make sure this matches ./NAM/version.h!
 project(NAM VERSION 0.3.0)
+
+configure_file(include/version.h.in include/version.h)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
@@ -20,13 +22,6 @@ else()
 	message(FATAL_ERROR "Unrecognized Platform!")
 endif()
 
-set(NAM_DEPS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies")
+find_package(Eigen3 REQUIRED)
 
-add_subdirectory(tools)
-
-#file(MAKE_DIRECTORY build/tools)
-
-#add_custom_target(copy_tools ALL
-#	${CMAKE_COMMAND} -E copy "$<TARGET_FILE:tools>" tools/
-#	DEPENDS tools
-#)
+add_subdirectory(src)
