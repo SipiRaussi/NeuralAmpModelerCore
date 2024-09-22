@@ -24,3 +24,15 @@ find_package(Eigen3 REQUIRED)
 find_package(nlohmann_json REQUIRED)
 
 add_subdirectory(src)
+
+install(TARGETS nam
+	EXPORT namTargets
+	LIBRARY DESTINATION lib
+	INCLUDES DESTINATION include)
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+	namVersion.cmake
+	VERSION ${PACKAGE_VERSION}
+	COMPATIBILITY AnyNewerVersion
+	)
