@@ -5,8 +5,6 @@ project(NAM VERSION 0.3.0)
 
 configure_file(include/version.h.in include/version.h)
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED OFF)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -23,5 +21,6 @@ else()
 endif()
 
 find_package(Eigen3 REQUIRED)
+find_package(nlohmann_json REQUIRED)
 
 add_subdirectory(src)

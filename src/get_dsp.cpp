@@ -2,9 +2,9 @@
 #include <sstream>
 #include <stdexcept>
 #include <unordered_set>
+#include <nlohmann/json.hpp>
 
 #include "dsp.h"
-#include "json.hpp"
 #include "lstm.h"
 #include "convnet.h"
 #include "wavenet.h"
