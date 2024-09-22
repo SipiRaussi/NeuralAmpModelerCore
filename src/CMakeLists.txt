@@ -1,6 +1,6 @@
 file(GLOB HEADER_LIST CONFIGURE_DEPENDS "${NeuralAmpModelerCore_SOURCE_DIR}/include/*.h")
 
-add_library(neural_amp_modeler_lib
+add_library(nam SHARED
 	activations.cpp
 	convnet.cpp
 	dsp.cpp
@@ -10,9 +10,9 @@ add_library(neural_amp_modeler_lib
 	wavenet.cpp
 	${HEADER_LIST})
 
-target_include_directories(neural_amp_modeler_lib PUBLIC ../include)
+target_include_directories(nam PUBLIC ../include)
 
-target_link_libraries(neural_amp_modeler_lib PRIVATE Eigen3::Eigen)
+target_link_libraries(nam PRIVATE Eigen3::Eigen nlohmann_json::nlohmann_json)
 
 source_group(
 	TREE "${PROJECT_SOURCE_DIR}/include"
