@@ -1,14 +1,16 @@
-file(GLOB HEADER_LIST CONFIGURE_DEPENDS "${NeuralAmpModelerCore_SOURCE_DIR}/include/*.h")
+file(GLOB HEADER_LIST CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/include/*.h")
 
 add_library(nam SHARED
-	activations.cpp
-	convnet.cpp
-	dsp.cpp
-	get_dsp.cpp
-	lstm.cpp
-	util.cpp
-	wavenet.cpp
-	${HEADER_LIST})
+	PRIVATE
+		activations.cpp
+		convnet.cpp
+		dsp.cpp
+		get_dsp.cpp
+		lstm.cpp
+		util.cpp
+		wavenet.cpp
+	PUBLIC
+		${HEADER_LIST})
 
 target_include_directories(nam PUBLIC ../include)
 
