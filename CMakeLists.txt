@@ -8,7 +8,7 @@ configure_file(include/version.h.in include/version.h)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED OFF)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -std=c++20")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	include_directories(SYSTEM /usr/local/include)
@@ -34,7 +34,25 @@ install(FILES ${HEADER_FILES} DESTINATION include)
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
-	namVersion.cmake
-	VERSION ${PACKAGE_VERSION}
-	COMPATIBILITY AnyNewerVersion
-	)
+	${PROJECT_BINARY_DIR}/cmake/namVersion.cmake
+	VERSION ${PROJECT_VERSION}
+	COMPATIBILITY AnyNewerVersion)
+
+export(EXPORT namTargets FILE ${PROJECT_BINARY_DIR}/cmake/namTargets.cmake)
+
+configure_file(${PROJECT_SOURCE_DIR}/cmake/namTargets.cmake.in
+	${PROJECT_BINARY_DIR}/cmake/namTargets.cmake
+	COPYONLY)
+
+configure_package_config_file(${PROJECT_SOURCE_DIR}/cmake/namConfig.cmake.in
+	${PROJECT_BINARY_DIR}/cmake/namConfig.cmake
+	INSTALL_DESTINATION cmake)
+
+install(EXPORT namTargets
+	FILE ${PROJECT_BINARY_DIR}/cmake/namTargets.cmake
+	DESTINATION cmake)
+
+install(FILES
+	${PROJECT_BINARY_DIR}/cmake/namConfig.cmake
+	${PROJECT_BINARY_DIR}/cmake/namVersion.cmake
+	DESTINATION cmake)
