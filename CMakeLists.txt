@@ -3,13 +3,11 @@ cmake_minimum_required(VERSION 3.30)
 # Make sure this matches ./NAM/version.h!
 project(NAM VERSION 0.3.0)
 
-configure_file(include/version.h.in include/version.h)
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED OFF)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if (CMAKE_CXX_COMPILER STREQUAL clang++)
+if (CMAKE_CXX_COMPILER STREQUAL "clang++")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif()
 
@@ -26,37 +24,49 @@ endif()
 find_package(Eigen3 REQUIRED)
 find_package(nlohmann_json REQUIRED)
 
+add_subdirectory(include)
 add_subdirectory(src)
 
-install(TARGETS nam LIBRARY DESTINATION lib)
-install(FILES "${PROJECT_BINARY_DIR}/include/version.h" DESTINATION include)
+install(TARGETS nam
+  EXPORT namTargets
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include/nam
+)
 
-file(GLOB HEADER_FILES "include/*.h")
+install(
+  FILES ${HEADER_FILES}
+  DESTINATION include/nam
+)
 
-install(FILES ${HEADER_FILES} DESTINATION include)
+install(EXPORT namTargets
+  FILE namTargets.cmake
+  DESTINATION lib/cmake/nam
+)
 
 include(CMakePackageConfigHelpers)
-write_basic_package_version_file(
-  ${PROJECT_BINARY_DIR}/cmake/namVersion.cmake
-  VERSION ${PROJECT_VERSION}
-  COMPATIBILITY AnyNewerVersion)
-
-export(EXPORT namTargets FILE ${PROJECT_BINARY_DIR}/cmake/namTargets.cmake)
-
-configure_file(cmake/namTargets.cmake.in cmake/namTargets.cmake COPYONLY)
 
 configure_package_config_file(
-  ${PROJECT_SOURCE_DIR}/cmake/namConfig.cmake.in
-  ${PROJECT_BINARY_DIR}/cmake/namConfig.cmake
-  INSTALL_DESTINATION cmake)
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/namConfig.cmake.in
+  "${CMAKE_CURRENT_BINARY_DIR}/cmake/namConfig.cmake"
+  INSTALL_DESTINATION "lib/cmake/nam"
+  NO_SET_AND_CHECK_MACRO
+  NO_CHECK_REQUIRED_COMPONENTS_MACRO
+)
 
-install(
-  EXPORT namTargets
-  FILE ${PROJECT_BINARY_DIR}/cmake/namTargets.cmake
-  DESTINATION cmake)
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_BINARY_DIR}/cmake/namVersion.cmake"
+  VERSION "${CMAKE_PROJECT_VERSION}"
+  COMPATIBILITY AnyNewerVersion
+)
 
-install(
-  FILES
-    ${PROJECT_BINARY_DIR}/cmake/namConfig.cmake
-    ${PROJECT_BINARY_DIR}/cmake/namVersion.cmake
-  DESTINATION cmake)
+install(FILES
+  ${CMAKE_CURRENT_BINARY_DIR}/cmake/namConfig.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/cmake/namVersion.cmake
+  DESTINATION lib/cmake/nam
+)
+
+export(EXPORT namTargets
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/namTargets.cmake"
+)
