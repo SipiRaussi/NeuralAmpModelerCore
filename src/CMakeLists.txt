@@ -1,4 +1,4 @@
-target_sources(core PRIVATE
+target_sources(namcore PRIVATE
   activations.cpp
   convnet.cpp
   dsp.cpp
