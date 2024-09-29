@@ -21,52 +21,54 @@ else()
   message(FATAL_ERROR "Unrecognized Platform!")
 endif()
 
+add_library(core SHARED)
+
 find_package(Eigen3 REQUIRED)
 find_package(nlohmann_json REQUIRED)
+
+target_link_libraries(core PRIVATE
+  Eigen3::Eigen
+  nlohmann_json::nlohmann_json
+)
 
 add_subdirectory(include)
 add_subdirectory(src)
 
-install(TARGETS nam
-  EXPORT namTargets
+install(TARGETS core
+  EXPORT coreTargets
   LIBRARY DESTINATION lib
-  ARCHIVE DESTINATION lib
-  RUNTIME DESTINATION bin
   INCLUDES DESTINATION include/nam
+  FILE_SET core_headers DESTINATION include/nam
+  FILE_SET core_configured_headers DESTINATION include/nam
 )
 
-install(
-  FILES ${HEADER_FILES}
-  DESTINATION include/nam
-)
-
-install(EXPORT namTargets
-  FILE namTargets.cmake
+install(EXPORT coreTargets
+  FILE coreTargets.cmake
   DESTINATION lib/cmake/nam
 )
 
 include(CMakePackageConfigHelpers)
 
 configure_package_config_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/namConfig.cmake.in
-  "${CMAKE_CURRENT_BINARY_DIR}/cmake/namConfig.cmake"
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/coreConfig.cmake.in
+  "${CMAKE_CURRENT_BINARY_DIR}/cmake/coreConfig.cmake"
   INSTALL_DESTINATION "lib/cmake/nam"
   NO_SET_AND_CHECK_MACRO
   NO_CHECK_REQUIRED_COMPONENTS_MACRO
 )
 
 write_basic_package_version_file(
-  "${CMAKE_CURRENT_BINARY_DIR}/cmake/namVersion.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/cmake/coreVersion.cmake"
   VERSION "${CMAKE_PROJECT_VERSION}"
   COMPATIBILITY AnyNewerVersion
 )
 
 install(FILES
-  ${CMAKE_CURRENT_BINARY_DIR}/cmake/namConfig.cmake
-  ${CMAKE_CURRENT_BINARY_DIR}/cmake/namVersion.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/cmake/coreConfig.cmake
+  ${CMAKE_CURRENT_BINARY_DIR}/cmake/coreVersion.cmake
   DESTINATION lib/cmake/nam
 )
 
-export(EXPORT namTargets
-  FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/namTargets.cmake"
+export(EXPORT coreTargets
+  FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/coreTargets.cmake"
 )
