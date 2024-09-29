@@ -21,12 +21,12 @@ else()
   message(FATAL_ERROR "Unrecognized Platform!")
 endif()
 
-add_library(core SHARED)
+add_library(namcore SHARED)
 
 find_package(Eigen3 REQUIRED)
 find_package(nlohmann_json REQUIRED)
 
-target_link_libraries(core PRIVATE
+target_link_libraries(namcore PRIVATE
   Eigen3::Eigen
   nlohmann_json::nlohmann_json
 )
@@ -34,7 +34,7 @@ target_link_libraries(core PRIVATE
 add_subdirectory(include)
 add_subdirectory(src)
 
-install(TARGETS core
+install(TARGETS namcore
   EXPORT coreTargets
   LIBRARY DESTINATION lib
   INCLUDES DESTINATION include/nam
